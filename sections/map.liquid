@@ -1,0 +1,355 @@
+{% include 'business-info' %}
+
+<section class="relative bg-gray-100">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="text-center mb-8">
+      <h2 class="text-3xl font-bold text-gray-900 mb-2">{{ section.settings.heading | default: 'Find Our Showroom' }}</h2>
+      <div class="w-20 h-1 bg-gradient-to-r from-amber-400 to-amber-300 mx-auto"></div>
+    </div>
+    
+    <div class="bg-white rounded-xl shadow-xl overflow-hidden">
+      <div class="md:flex">
+        <!-- Left Column - Map -->
+        <div class="md:w-2/3 h-96 md:h-auto">
+          <div id="map" class="w-full h-full">
+            <!-- Fallback image in case JavaScript is disabled -->
+            <div class="w-full h-full bg-gray-200 flex items-center justify-center">
+              <div class="text-center p-8">
+                <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                </svg>
+                <h3 class="mt-2 text-lg font-medium text-gray-900">Our Location</h3>
+                <p class="mt-1 text-gray-500">
+                  {{ business_info.address }}, {{ business_info.city_state_zip }}
+                </p>
+                <p class="mt-4 text-sm text-gray-500">
+                  Enable JavaScript to view the interactive map.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Right Column - Directions -->
+        <div class="md:w-1/3 p-6 bg-gray-50 border-l border-gray-200">
+          <h3 class="text-lg font-medium text-gray-900 mb-4">Directions</h3>
+          
+          <div class="space-y-4">
+            <div>
+              <h4 class="text-sm font-medium text-gray-700">Address</h4>
+              <p class="mt-1 text-gray-600">
+                {{ business_info.address }}<br>
+                {{ business_info.city_state_zip }}
+              </p>
+            </div>
+            
+            {% if section.settings.hours != blank %}
+            <div>
+              <h4 class="text-sm font-medium text-gray-700">Hours</h4>
+              <div class="mt-1 text-gray-600 space-y-1">
+                {{ section.settings.hours | newline_to_br }}
+              </div>
+            </div>
+            {% endif %}
+            
+            {% if section.settings.parking != blank %}
+            <div>
+              <h4 class="text-sm font-medium text-gray-700">Parking</h4>
+              <p class="mt-1 text-gray-600">{{ section.settings.parking }}</p>
+            </div>
+            {% endif %}
+            
+            <div class="pt-4 border-t border-gray-200">
+              {% assign full_address = business_info.address | append: ', ' | append: business_info.city_state_zip | url_encode %}
+              <a 
+                href="https://www.google.com/maps/dir//{{ full_address }}" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-900 hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
+              >
+                <svg class="-ml-1 mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                </svg>
+                Get Directions
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Map",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Find Our Showroom"
+    },
+    {
+      "type": "text",
+      "id": "address",
+      "label": "Street Address",
+      "default": "123 Flooring St"
+    },
+    {
+      "type": "text",
+      "id": "city",
+      "label": "City, State ZIP",
+      "default": "Minneapolis, MN 55401"
+    },
+    {
+      "type": "textarea",
+      "id": "hours",
+      "label": "Business Hours",
+      "default": "Monday - Friday: 9:00 AM - 5:00 PM\nSaturday: 10:00 AM - 2:00 PM\nSunday: Closed"
+    },
+    {
+      "type": "text",
+      "id": "parking",
+      "label": "Parking Information",
+      "default": "Free parking available in front of the building and in the adjacent lot."
+    },
+    {
+      "type": "text",
+      "id": "api_key",
+      "label": "Google Maps API Key",
+      "info": "Required for the interactive map. Get an API key from the Google Cloud Platform Console."
+    },
+    {
+      "type": "number",
+      "id": "zoom",
+      "label": "Map Zoom Level",
+      "default": 15,
+      "min": 1,
+      "max": 20
+    }
+  ],
+  "presets": [
+    {
+      "name": "Map",
+      "category": "Contact"
+    }
+  ]
+}
+{% endschema %}
+
+{% javascript %}
+document.addEventListener('DOMContentLoaded', function() {
+  // Only load the Google Maps API if we have an API key
+  const apiKey = '{{ section.settings.api_key }}';
+  const address = '{{ business_info.address }}, {{ business_info.city_state_zip }}';
+  const zoom = {{ section.settings.zoom | default: 15 }};
+  
+  if (!apiKey) {
+    console.warn('Google Maps API key is not set. Please add your API key in the theme editor.');
+    return;
+  }
+  
+  // Load the Google Maps API
+  const script = document.createElement('script');
+  script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=initMap`;
+  script.async = true;
+  script.defer = true;
+  
+  // Define the initMap function that will be called by the Google Maps API
+  window.initMap = function() {
+    const geocoder = new google.maps.Geocoder();
+    const mapElement = document.getElementById('map');
+    
+    if (!mapElement) return;
+    
+    // Create a default map centered on the US
+    const map = new google.maps.Map(mapElement, {
+      zoom: 8,
+      center: { lat: 37.0902, lng: -95.7129 }, // Center of the US
+      styles: [
+        {
+          "featureType": "all",
+          "elementType": "labels.text.fill",
+          "stylers": [
+            { "saturation": 36 },
+            { "color": "#333333" },
+            { "lightness": 40 }
+          ]
+        },
+        {
+          "featureType": "all",
+          "elementType": "labels.text.stroke",
+          "stylers": [
+            { "visibility": "on" },
+            { "color": "#ffffff" },
+            { "lightness": 16 }
+          ]
+        },
+        {
+          "featureType": "all",
+          "elementType": "labels.icon",
+          "stylers": [{ "visibility": "off" }]
+        },
+        {
+          "featureType": "administrative",
+          "elementType": "geometry.fill",
+          "stylers": [
+            { "color": "#fefefe" },
+            { "lightness": 20 }
+          ]
+        },
+        {
+          "featureType": "administrative",
+          "elementType": "geometry.stroke",
+          "stylers": [
+            { "color": "#fefefe" },
+            { "lightness": 17 },
+            { "weight": 1.2 }
+          ]
+        },
+        {
+          "featureType": "landscape",
+          "elementType": "geometry",
+          "stylers": [
+            { "color": "#f5f5f5" },
+            { "lightness": 20 }
+          ]
+        },
+        {
+          "featureType": "poi",
+          "elementType": "geometry",
+          "stylers": [
+            { "color": "#f5f5f5" },
+            { "lightness": 21 }
+          ]
+        },
+        {
+          "featureType": "road.highway",
+          "elementType": "geometry.fill",
+          "stylers": [
+            { "color": "#ffffff" },
+            { "lightness": 17 }
+          ]
+        },
+        {
+          "featureType": "road.highway",
+          "elementType": "geometry.stroke",
+          "stylers": [
+            { "color": "#ffffff" },
+            { "lightness": 29 },
+            { "weight": 0.2 }
+          ]
+        },
+        {
+          "featureType": "road.arterial",
+          "elementType": "geometry",
+          "stylers": [
+            { "color": "#ffffff" },
+            { "lightness": 18 }
+          ]
+        },
+        {
+          "featureType": "road.local",
+          "elementType": "geometry",
+          "stylers": [
+            { "color": "#ffffff" },
+            { "lightness": 16 }
+          ]
+        },
+        {
+          "featureType": "transit",
+          "elementType": "geometry",
+          "stylers": [
+            { "color": "#f2f2f2" },
+            { "lightness": 19 }
+          ]
+        },
+        {
+          "featureType": "water",
+          "elementType": "geometry",
+          "stylers": [
+            { "color": "#e9e9e9" },
+            { "lightness": 17 }
+          ]
+        }
+      ]
+    });
+    
+    // Add a marker for the business location
+    geocoder.geocode({ address: address }, function(results, status) {
+      if (status === 'OK' && results[0]) {
+        map.setCenter(results[0].geometry.location);
+        map.setZoom(zoom);
+        
+        new google.maps.Marker({
+          map: map,
+          position: results[0].geometry.location,
+          title: '{{ shop.name }}',
+          icon: {
+            url: '{{ "map-marker.png" | asset_url }}',
+            scaledSize: new google.maps.Size(40, 40)
+          }
+        });
+      } else {
+        console.error('Geocode was not successful for the following reason: ' + status);
+      }
+    });
+  };
+  
+  // Add the script to the document
+  document.head.appendChild(script);
+});
+{% endjavascript %}
+
+<style>
+  #map {
+    min-height: 400px;
+  }
+  
+  @media (min-width: 768px) {
+    #map {
+      min-height: 500px;
+    }
+  }
+  
+  /* Custom scrollbar for the directions panel */
+  .directions-panel {
+    max-height: 500px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #cbd5e0 #f7fafc;
+  }
+  
+  .directions-panel::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  .directions-panel::-webkit-scrollbar-track {
+    background: #f7fafc;
+  }
+  
+  .directions-panel::-webkit-scrollbar-thumb {
+    background-color: #cbd5e0;
+    border-radius: 20px;
+  }
+  
+  /* Animation for the map marker */
+  @keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+      transform: translateY(0);
+    }
+    40% {
+      transform: translateY(-20px);
+    }
+    60% {
+      transform: translateY(-10px);
+    }
+  }
+  
+  .map-marker {
+    animation: bounce 2s infinite;
+  }
+</style>

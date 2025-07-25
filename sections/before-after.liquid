@@ -1,0 +1,356 @@
+<section class="py-20 bg-gray-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-12">
+      <span class="inline-block px-3 py-1 text-sm font-semibold text-amber-600 bg-amber-100 rounded-full mb-4">
+        {{ section.settings.subheading | default: 'Our Work' }}
+      </span>
+      <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+        {{ section.settings.heading | default: 'Transformations That Speak for Themselves' }}
+      </h2>
+      <div class="w-20 h-1 bg-gradient-to-r from-amber-400 to-amber-300 mx-auto"></div>
+    </div>
+    
+    <!-- Before/After Slider -->
+    <div class="relative max-w-4xl mx-auto">
+      <div class="before-after-slider">
+        {% for block in section.blocks %}
+          {% if block.type == 'transformation' %}
+            <div class="relative h-96 md:h-[500px] rounded-xl overflow-hidden shadow-xl">
+              <!-- Before Image -->
+              <div class="absolute inset-0">
+                {% if block.settings.before_image != blank %}
+                  {{ block.settings.before_image | image_url: width: 1200 | image_tag:
+                    loading: 'lazy',
+                    class: 'w-full h-full object-cover',
+                    alt: block.settings.before_alt | escape
+                  }}
+                {% else %}
+                  <div class="w-full h-full bg-gray-200 flex items-center justify-center">
+                    <span class="text-gray-400">Before</span>
+                  </div>
+                {% endif %}
+                <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+                  <span class="text-white text-xl font-bold bg-black bg-opacity-70 px-4 py-2 rounded-lg">Before</span>
+                </div>
+              </div>
+              
+              <!-- After Image -->
+              <div class="absolute inset-0 w-1/2 overflow-hidden">
+                {% if block.settings.after_image != blank %}
+                  {{ block.settings.after_image | image_url: width: 1200 | image_tag:
+                    loading: 'lazy',
+                    class: 'w-full h-full object-cover',
+                    alt: block.settings.after_alt | escape
+                  }}
+                {% else %}
+                  <div class="w-full h-full bg-blue-200 flex items-center justify-center">
+                    <span class="text-blue-800">After</span>
+                  </div>
+                {% endif %}
+                <div class="absolute inset-0 bg-blue-900 bg-opacity-40 flex items-center justify-center">
+                  <span class="text-white text-xl font-bold bg-blue-900 bg-opacity-70 px-4 py-2 rounded-lg">After</span>
+                </div>
+              </div>
+              
+              <!-- Slider Handle -->
+              <div class="absolute inset-y-0 left-1/2 w-1 bg-white cursor-ew-resize z-10 transform -translate-x-1/2 flex items-center justify-center">
+                <div class="w-12 h-12 rounded-full bg-white shadow-lg flex items-center justify-center">
+                  <svg class="h-6 w-6 text-blue-900" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path>
+                  </svg>
+                </div>
+              </div>
+              
+              <!-- Project Info -->
+              <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-6 text-white">
+                <h3 class="text-xl font-bold mb-1">{{ block.settings.title | default: 'Project Title' }}</h3>
+                <p class="text-blue-100">{{ block.settings.description | default: 'Flooring transformation' }}</p>
+              </div>
+            </div>
+          {% endif %}
+        {% else %}
+          <!-- Default transformation items -->
+          {% for i in (1..3) %}
+            <div class="relative h-96 md:h-[500px] rounded-xl overflow-hidden shadow-xl mb-12">
+              <!-- Before Image -->
+              <div class="absolute inset-0">
+                <div class="w-full h-full bg-gray-200 flex items-center justify-center">
+                  <span class="text-gray-400">Before</span>
+                </div>
+                <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+                  <span class="text-white text-xl font-bold bg-black bg-opacity-70 px-4 py-2 rounded-lg">Before</span>
+                </div>
+              </div>
+              
+              <!-- After Image -->
+              <div class="absolute inset-0 w-1/2 overflow-hidden">
+                <div class="w-full h-full bg-blue-200 flex items-center justify-center">
+                  <span class="text-blue-800">After</span>
+                </div>
+                <div class="absolute inset-0 bg-blue-900 bg-opacity-40 flex items-center justify-center">
+                  <span class="text-white text-xl font-bold bg-blue-900 bg-opacity-70 px-4 py-2 rounded-lg">After</span>
+                </div>
+              </div>
+              
+              <!-- Slider Handle -->
+              <div class="absolute inset-y-0 left-1/2 w-1 bg-white cursor-ew-resize z-10 transform -translate-x-1/2 flex items-center justify-center">
+                <div class="w-12 h-12 rounded-full bg-white shadow-lg flex items-center justify-center">
+                  <svg class="h-6 w-6 text-blue-900" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path>
+                  </svg>
+                </div>
+              </div>
+              
+              <!-- Project Info -->
+              <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-6 text-white">
+                <h3 class="text-xl font-bold mb-1">Project {{ i }}</h3>
+                <p class="text-blue-100">Flooring transformation example</p>
+              </div>
+            </div>
+          {% endfor %}
+        {% endfor %}
+      </div>
+      
+      <!-- Navigation Dots -->
+      <div class="flex justify-center mt-6 space-x-2">
+        {% for block in section.blocks %}
+          <button type="button" class="w-3 h-3 rounded-full bg-gray-300 hover:bg-blue-600 focus:outline-none" aria-label="View transformation {{ forloop.index }}"></button>
+        {% else %}
+          <button type="button" class="w-3 h-3 rounded-full bg-blue-600" aria-label="View transformation 1"></button>
+          <button type="button" class="w-3 h-3 rounded-full bg-gray-300 hover:bg-blue-600" aria-label="View transformation 2"></button>
+          <button type="button" class="w-3 h-3 rounded-full bg-gray-300 hover:bg-blue-600" aria-label="View transformation 3"></button>
+        {% endfor %}
+      </div>
+    </div>
+    
+    <!-- CTA -->
+    <div class="mt-16 text-center">
+      <h3 class="text-2xl font-bold text-gray-900 mb-4">{{ section.settings.cta_heading | default: 'Ready to Transform Your Space?' }}</h3>
+      <p class="text-gray-600 max-w-2xl mx-auto mb-8">{{ section.settings.cta_text | default: 'Schedule your free in-home consultation today and let us help you choose the perfect flooring solution for your home or business.' }}</p>
+      <a href="{{ section.settings.cta_button_link | default: '/contact' }}" class="inline-flex items-center px-8 py-3 border border-transparent text-base font-medium rounded-full shadow-sm text-white bg-blue-900 hover:bg-blue-800 transition-colors">
+        {{ section.settings.cta_button_text | default: 'Get Your Free Estimate' }}
+      </a>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Before & After",
+  "settings": [
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Our Work"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Transformations That Speak for Themselves"
+    },
+    {
+      "type": "header",
+      "content": "Call to Action"
+    },
+    {
+      "type": "text",
+      "id": "cta_heading",
+      "label": "CTA Heading",
+      "default": "Ready to Transform Your Space?"
+    },
+    {
+      "type": "textarea",
+      "id": "cta_text",
+      "label": "CTA Text",
+      "default": "Schedule your free in-home consultation today and let us help you choose the perfect flooring solution for your home or business."
+    },
+    {
+      "type": "text",
+      "id": "cta_button_text",
+      "label": "CTA Button Text",
+      "default": "Get Your Free Estimate"
+    },
+    {
+      "type": "url",
+      "id": "cta_button_link",
+      "label": "CTA Button Link"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "transformation",
+      "name": "Transformation",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "before_image",
+          "label": "Before Image"
+        },
+        {
+          "type": "text",
+          "id": "before_alt",
+          "label": "Before Image Alt Text"
+        },
+        {
+          "type": "image_picker",
+          "id": "after_image",
+          "label": "After Image"
+        },
+        {
+          "type": "text",
+          "id": "after_alt",
+          "label": "After Image Alt Text"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Project Title"
+        },
+        {
+          "type": "text",
+          "id": "description",
+          "label": "Project Description"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Before & After",
+      "category": "Content",
+      "blocks": [
+        {
+          "type": "transformation",
+          "settings": {
+            "title": "Modern Kitchen Remodel",
+            "description": "Luxury vinyl plank installation"
+          }
+        },
+        {
+          "type": "transformation",
+          "settings": {
+            "title": "Living Room Makeover",
+            "description": "Hardwood floor refinishing"
+          }
+        },
+        {
+          "type": "transformation",
+          "settings": {
+            "title": "Bathroom Renovation",
+            "description": "Tile installation"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
+{% javascript %}
+document.addEventListener('DOMContentLoaded', function() {
+  const sliders = document.querySelectorAll('.before-after-slider > div');
+  let currentSlide = 0;
+  
+  // Initialize the first slide
+  if (sliders.length > 0) {
+    sliders[0].classList.add('block');
+    sliders[0].classList.remove('hidden');
+  }
+  
+  // Handle slider navigation
+  document.querySelectorAll('.before-after-slider button').forEach((button, index) => {
+    button.addEventListener('click', () => {
+      // Update active slide
+      sliders[currentSlide].classList.add('hidden');
+      sliders[index].classList.remove('hidden');
+      currentSlide = index;
+      
+      // Update active dot
+      document.querySelectorAll('.before-after-slider + div button').forEach((btn, i) => {
+        if (i === index) {
+          btn.classList.remove('bg-gray-300');
+          btn.classList.add('bg-blue-600');
+        } else {
+          btn.classList.remove('bg-blue-600');
+          btn.classList.add('bg-gray-300');
+        }
+      });
+    });
+  });
+  
+  // Handle slider drag functionality
+  const sliderHandles = document.querySelectorAll('.before-after-slider [class*="w-1/2"]');
+  
+  sliderHandles.forEach(handle => {
+    const container = handle.closest('.relative');
+    const slider = container.querySelector('.w-1');
+    let isDragging = false;
+    
+    const moveSlider = (e) => {
+      if (!isDragging) return;
+      
+      const rect = container.getBoundingClientRect();
+      let x = e.pageX - rect.left;
+      
+      // Keep within bounds
+      x = Math.max(0, Math.min(x, rect.width));
+      
+      // Update handle position
+      const percent = (x / rect.width) * 100;
+      handle.style.width = `${percent}%`;
+      
+      // Prevent text selection while dragging
+      e.preventDefault();
+    };
+    
+    const startDrag = () => {
+      isDragging = true;
+      document.body.style.userSelect = 'none';
+      document.body.style.cursor = 'ew-resize';
+    };
+    
+    const stopDrag = () => {
+      isDragging = false;
+      document.body.style.userSelect = '';
+      document.body.style.cursor = '';
+    };
+    
+    // Desktop
+    slider.addEventListener('mousedown', startDrag);
+    document.addEventListener('mousemove', moveSlider);
+    document.addEventListener('mouseup', stopDrag);
+    
+    // Mobile
+    slider.addEventListener('touchstart', startDrag);
+    document.addEventListener('touchmove', moveSlider, { passive: false });
+    document.addEventListener('touchend', stopDrag);
+  });
+  
+  // Auto-rotate slides
+  if (sliders.length > 1) {
+    setInterval(() => {
+      const nextSlide = (currentSlide + 1) % sliders.length;
+      document.querySelectorAll('.before-after-slider + div button')[nextSlide].click();
+    }, 8000);
+  }
+});
+{% endjavascript %}
+
+<style>
+  .before-after-slider > div {
+    display: none;
+  }
+  .before-after-slider > div.block {
+    display: block;
+  }
+  .before-after-slider img {
+    pointer-events: none;
+  }
+  @media (max-width: 767px) {
+    .before-after-slider [class*="w-1/2"] {
+      width: 50% !important;
+    }
+  }
+</style>

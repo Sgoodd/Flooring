@@ -1,0 +1,43 @@
+{%- comment -%}
+  Business Information Snippet
+  Access this data using: {% include 'business-info' %}
+  Then access properties like: {{ business_info.name }}, {{ business_info.phone }}, etc.
+{%- endcomment -%}
+
+{%- assign business_info = shop.metafields.global -%}
+
+{%- comment -%} Set default values if not set in theme settings {%- endcomment -%}
+{%- assign business_info = business_info | default: shop.metafields.global -%}
+
+{%- comment -%} Basic Business Info {%- endcomment -%}
+{%- assign business_info = business_info | default: shop.metafields.global -%}
+{%- assign business_info.name = business_info.name | default: 'S&S Flooring Twin Cities' -%}
+{%- assign business_info.phone = business_info.phone | default: '(612) 458-8579' -%}
+{%- assign business_info.email = business_info.email | default: 'info@ssflooringtc.com' -%}
+{%- assign business_info.address = business_info.address | default: '123 Flooring St' -%}
+{%- assign business_info.city_state_zip = business_info.city_state_zip | default: 'Minneapolis, MN 55401' -%}
+
+{%- comment -%} Business Hours {%- endcomment -%}
+{%- assign business_info.hours_weekdays = business_info.hours_weekdays | default: 'Monday - Friday: 8:00 AM - 6:00 PM' -%}
+{%- assign business_info.hours_saturday = business_info.hours_saturday | default: 'Saturday: 9:00 AM - 4:00 PM' -%}
+{%- assign business_info.hours_sunday = business_info.hours_sunday | default: 'Sunday: Closed' -%}
+
+{%- comment -%} Social Media {%- endcomment -%}
+{%- assign business_info.facebook_url = business_info.facebook_url | default: 'https://facebook.com/ssflooringtc' -%}
+{%- assign business_info.instagram_url = business_info.instagram_url | default: 'https://instagram.com/ssflooringtc' -%}
+{%- assign business_info.pinterest_url = business_info.pinterest_url | default: 'https://pinterest.com/ssflooringtc' -%}
+{%- assign business_info.houzz_url = business_info.houzz_url | default: 'https://www.houzz.com/pro/ssflooringtc' -%}
+{%- assign business_info.google_business_url = business_info.google_business_url | default: 'https://g.page/ssflooringtc' -%}
+
+{%- comment -%} Make the business_info available to the parent template {%- endcomment -%}
+{{ business_info | json }}
+
+{%- comment -%} Usage in templates:
+  {% include 'business-info' %}
+  <p>Call us at: {{ business_info.phone }}</p>
+  <p>Email: {{ business_info.email }}</p>
+  <p>Address: {{ business_info.address }}, {{ business_info.city_state_zip }}</p>
+  
+  {% assign full_address = business_info.address | append: ', ' | append: business_info.city_state_zip | url_encode %}
+  <a href="https://maps.google.com/?q={{ full_address }}" target="_blank">View on Map</a>
+{%- endcomment -%}
